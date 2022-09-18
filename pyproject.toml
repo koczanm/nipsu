@@ -1,0 +1,67 @@
+[tool.poetry]
+name = "nipsu"
+version = "0.0.1"
+description = "Cross-platform network packet sniffer"
+authors = [
+  "Mateusz Koczan <xmateuszkoczan@gmail.com>"
+]
+license = "MIT License"
+readme = "README.md"
+
+documentation = "https://koczanm.github.io/nipus"
+homepage = "https://koczanm.github.io/nipsu"
+repository = "https://github.com/koczanm/nipsu"
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Topic :: Internet",
+  "Topic :: System :: Networking",
+  "Topic :: System :: Networking :: Monitoring",
+  "Typing :: Typed",
+]
+
+packages = [
+  {include = "nipsu", from = "src"}
+]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4.0"
+pypcap = {path = "../pypcap"}
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+line_length = 119
+src_paths = ["src", "tests"]
+
+[tool.black]
+line-length = 119
+target-version = ["py38", "py39", "py310"]
+include = "./pyi?$"
+
+[tool.pytest.ini_options]
+addopts = """\
+  --cov nipsu \
+  --cov tests \
+  --cov-report term-missing \
+  --no-cov-on-fail
+"""
+
+[tool.coverage.report]
+fail_under = 80
+exclude_lines = [
+  "if TYPE_CHECKING:",
+  "pragma: no cover",
+]
