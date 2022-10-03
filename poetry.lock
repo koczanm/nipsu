@@ -27,8 +27,10 @@ python-versions = "*"
 develop = false
 
 [package.source]
-type = "directory"
-url = "../pypcap"
+type = "git"
+url = "https://github.com/koczanm/pypcap.git"
+reference = "HEAD"
+resolved_reference = "e6e4e4c301612ddd0bc0ea5985ed071b30434732"
 
 [[package]]
 name = "typer"
@@ -50,7 +52,7 @@ test = ["black (>=22.3.0,<23.0.0)", "coverage (>=5.2,<6.0)", "isort (>=5.0.6,<6.
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<4.0"
-content-hash = "58f24d05d93d2548efa958a779c1497aa08713657da433100d72d171cd57cef8"
+content-hash = "6497f34fe1bb975d72f48d971a721a6d3a63a35645e5b2b73691d15c82b9e901"
 
 [metadata.files]
 click = [

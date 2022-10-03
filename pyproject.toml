@@ -33,8 +33,8 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
-pypcap = {path = "../pypcap"}
 typer = "^0.6.1"
+pypcap = {git = "https://github.com/koczanm/pypcap.git"}
 
 [tool.poetry.dev-dependencies]
 
