@@ -32,9 +32,9 @@ class Protocol(BigEndianStructure):
 
     @classmethod
     def array_to_proto_addr(cls, addr_arr: Array["_CData"], addr_family: Optional[socket.AddressFamily] = None) -> str:
-    if addr_family:
-        return socket.inet_ntop(addr_family, bytes(addr_arr))
-    return cls.colon_hex_notation(addr_arr)
+        if addr_family:
+            return socket.inet_ntop(addr_family, bytes(addr_arr))
+        return cls.colon_hex_notation(addr_arr)
 
     @staticmethod
     def cdata_to_hex_str(value: "_CData") -> str:

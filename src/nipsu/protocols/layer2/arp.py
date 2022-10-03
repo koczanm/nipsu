@@ -3,7 +3,7 @@ from ctypes import Array, c_ubyte, c_uint8, c_uint16
 from typing import TYPE_CHECKING, Sequence
 
 from nipsu.protocols.base import Protocol
-from nipsu.protocols.ethernet import ETHERTYPES
+from nipsu.protocols.layer2.ethernet import ETHERTYPES
 
 if TYPE_CHECKING:
     from ctypes import _CData
@@ -35,7 +35,7 @@ class ARP(Protocol):
         21: "ATM",
         31: "IPsec tunnel",
     }
-    protocol_types: ETHERTYPES
+    protocol_types: dict[int, str] = ETHERTYPES
     operations: dict[int, str] = {
         1: "ARP request",
         2: "ARP reply",
@@ -58,7 +58,7 @@ class ARP(Protocol):
 
     @property
     def oper_str(self) -> str:
-        return self.operations.get(self.oper, f"Unsupported: {self.oper}")
+        return self.operations.get(self.oper, f"Unsupported: {self.oper}")
 
     def proto_addr(self, addr_arr: Array["_CData"]):
         match self.ptype_str:

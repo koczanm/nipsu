@@ -103,7 +103,7 @@ class IPv4(IP, Protocol):
         }
 
 
-class IPv6(IP, 
+class IPv6(IP, Protocol):
     _fields_: Sequence[tuple[str, type["_CData"]] | tuple[str, type["_CData"], int]] = [
         ("version", c_uint32, 4),
         ("traffic_cls", c_uint32, 8),

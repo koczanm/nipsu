@@ -7,7 +7,7 @@ repos:
       - id: check-case-conflict
       - id: check-docstring-first
       - id: check-json
-      - id: check-merge-conflists
+      - id: check-merge-conflict
       - id: check-shebang-scripts-are-executable
       - id: check-toml
       - id: check-yaml
