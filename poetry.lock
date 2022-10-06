@@ -173,7 +173,7 @@ test = ["black (>=22.3.0,<23.0.0)", "coverage (>=5.2,<6.0)", "isort (>=5.0.6,<6.
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<4.0"
-content-hash = "3bb9e16136b59f4e65c5f5be7fe3cbbdd21e0d3815181a2ffc06f5a9202c14c8"
+content-hash = "1e1e8e1c2bfdcdca6e267afcf9757854f3164326658c8907ede463673ccee4b0"
 
 [metadata.files]
 attrs = [
