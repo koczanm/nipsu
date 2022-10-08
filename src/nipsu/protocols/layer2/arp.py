@@ -1,6 +1,6 @@
 import socket
 from ctypes import Array, c_ubyte, c_uint8, c_uint16
-from typing import TYPE_CHECKING, Sequence
+from typing import TYPE_CHECKING, Dict, Sequence, Tuple, Type, Union
 
 from nipsu.protocols.base import Protocol
 from nipsu.protocols.layer2.ethernet import ETHERTYPES
@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class ARP(Protocol):
-    _fields_: Sequence[tuple[str, type["_CData"]] | tuple[str, type["_CData"], int]] = [
+    _fields_: Sequence[Union[Tuple[str, Type["_CData"]], Tuple[str, Type["_CData"], int]]] = [
         ("htype", c_uint16),
         ("ptype", c_uint16),
         ("hlen", c_uint8),
@@ -22,7 +22,7 @@ class ARP(Protocol):
         ("tpa", c_ubyte * 4),
     ]
     header_len: int = 28
-    hardware_types: dict[int, str] = {
+    hardware_types: Dict[int, str] = {
         1: "Ethernet",
         6: "IEEE 802 Networks",
         7: "ARCNET",
@@ -35,8 +35,8 @@ class ARP(Protocol):
         21: "ATM",
         31: "IPsec tunnel",
     }
-    protocol_types: dict[int, str] = ETHERTYPES
-    operations: dict[int, str] = {
+    protocol_types: Dict[int, str] = ETHERTYPES
+    operations: Dict[int, str] = {
         1: "ARP request",
         2: "ARP reply",
         3: "RARP request",
@@ -60,7 +60,7 @@ class ARP(Protocol):
     def oper_str(self) -> str:
         return self.operations.get(self.oper, f"Unsupported: {self.oper}")
 
-    def proto_addr(self, addr_arr: Array["_CData"]):
+    def proto_addr(self, addr_arr: Array) -> str:
         if self.ptype_str == "IPv4":
             return self.array_to_proto_addr(addr_arr, socket.AF_INET)
         elif self.ptype_str == "IPv6":
@@ -68,7 +68,7 @@ class ARP(Protocol):
         else:
             return self.array_to_proto_addr(addr_arr)
 
-    def describe(self) -> dict[str, int | str | None]:
+    def describe(self) -> Dict[str, Union[int, str, None]]:
         return {
             "Hardware type": self.htype_str,
             "Protocol type": self.ptype_str,

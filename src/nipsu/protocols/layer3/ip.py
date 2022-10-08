@@ -1,6 +1,6 @@
 import socket
 from ctypes import c_ubyte, c_uint8, c_uint16, c_uint32
-from typing import TYPE_CHECKING, Sequence
+from typing import TYPE_CHECKING, Dict, Optional, Sequence, Tuple, Type, Union
 
 from nipsu.protocols.base import Protocol
 
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 
 class IP:
-    proto_nums: dict[int, str] = {
+    proto_nums: Dict[int, str] = {
         1: "ICMP",
         6: "TCP",
         17: "UDP",
@@ -19,7 +19,7 @@ class IP:
 
 
 class IPv4(IP, Protocol):
-    _fields_: Sequence[tuple[str, type["_CData"]] | tuple[str, type["_CData"], int]] = [
+    _fields_: Sequence[Union[Tuple[str, Type["_CData"]], Tuple[str, Type["_CData"], int]]] = [
         ("version", c_uint8, 4),
         ("ihl", c_uint8, 4),  # TODO: support the options field if ihl > 5
         ("dscp", c_uint8, 6),
@@ -35,7 +35,7 @@ class IPv4(IP, Protocol):
         ("dst_addr", c_ubyte * 4),
     ]
     header_len: int = 20
-    service_classes: dict[int, str] = {
+    service_classes: Dict[int, str] = {
         0: "Standard",
         8: "Low-priority data",
         10: "High-throughput data",
@@ -58,13 +58,13 @@ class IPv4(IP, Protocol):
         48: "Network control",
         56: "Reserved for future use",
     }
-    ecn_codes: dict[int, str] = {
+    ecn_codes: Dict[int, str] = {
         0b00: "Non ECN-Capable Transport",
         0b10: "ECN Capable Transport",
         0b01: "ECN Capable Transport",
         0b11: "Congestion Encountered",
     }
-    flag_codes: dict[int, str] = {
+    flag_codes: Dict[int, str] = {
         0b000: "Not set",
         0b010: "Don't fragment",
         0b001: "More fragments",
@@ -75,7 +75,7 @@ class IPv4(IP, Protocol):
         return self.proto_nums.get(self.proto, f"Unsupported: {self.proto}")
 
     @property
-    def service_class(self) -> str | None:
+    def service_class(self) -> Optional[str]:
         return self.service_classes.get(self.dscp)
 
     @property
@@ -86,7 +86,7 @@ class IPv4(IP, Protocol):
     def flags_str(self) -> str:
         return self.flag_codes.get(self.flags, "Invalid")
 
-    def describe(self) -> dict[str, int | str | None]:
+    def describe(self) -> Dict[str, Union[int, str, None]]:
         return {
             "Version": self.version,
             "IHL": self.ihl,
@@ -105,7 +105,7 @@ class IPv4(IP, Protocol):
 
 
 class IPv6(IP, Protocol):
-    _fields_: Sequence[tuple[str, type["_CData"]] | tuple[str, type["_CData"], int]] = [
+    _fields_: Sequence[Union[Tuple[str, Type["_CData"]], Tuple[str, Type["_CData"], int]]] = [
         ("version", c_uint32, 4),
         ("traffic_cls", c_uint32, 8),
         ("flow_label", c_uint32, 20),

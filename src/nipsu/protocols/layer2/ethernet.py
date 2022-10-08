@@ -1,5 +1,5 @@
 from ctypes import c_ubyte, c_uint16
-from typing import TYPE_CHECKING, Sequence
+from typing import TYPE_CHECKING, Dict, Sequence, Tuple, Type, Union
 
 from nipsu.protocols.base import Protocol
 
@@ -16,19 +16,19 @@ ETHERTYPES = {
 
 
 class Ethernet(Protocol):
-    _fields_: Sequence[tuple[str, type["_CData"]] | tuple[str, type["_CData"], int]] = [
+    _fields_: Sequence[Union[Tuple[str, Type["_CData"]], Tuple[str, Type["_CData"], int]]] = [
         ("dst_mac", c_ubyte * 6),
         ("src_mac", c_ubyte * 6),
         ("eth_type", c_uint16),
     ]
     header_len: int = 14
-    ethertypes: dict[int, str] = ETHERTYPES
+    ethertypes: Dict[int, str] = ETHERTYPES
 
     @property
     def encap_proto(self) -> str:
         return self.ethertypes.get(self.eth_type, f"Unsupported: {self.eth_type}")
 
-    def describe(self) -> dict[str, int | str | None]:
+    def describe(self) -> Dict[str, Union[int, str, None]]:
         return {
             "Destination MAC address": self.colon_hex_notation(self.dst_mac),
             "Source MAC address": self.colon_hex_notation(self.src_mac),

@@ -3,7 +3,7 @@ from __future__ import annotations
 import socket
 from abc import abstractmethod, abstractproperty
 from ctypes import Array, BigEndianStructure
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Dict, Optional, Union
 
 if TYPE_CHECKING:
     from ctypes import _CData
@@ -14,11 +14,11 @@ class Protocol(BigEndianStructure):
     header_len: int
 
     @abstractproperty
-    def encap_proto(self) -> str | None:
+    def encap_proto(self) -> Optional[str]:
         raise NotImplementedError
 
     @abstractmethod
-    def describe(self) -> dict[str, int | str | None]:
+    def describe(self) -> Dict[str, Union[int, str, None]]:
         raise NotImplementedError
 
     @classmethod
