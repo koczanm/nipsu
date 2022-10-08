@@ -1,3 +1,4 @@
+import socket
 from ctypes import c_ubyte, c_uint8, c_uint16, c_uint32
 from typing import TYPE_CHECKING, Sequence
 
@@ -58,7 +59,7 @@ class IPv4(IP, Protocol):
         56: "Reserved for future use",
     }
     ecn_codes: dict[int, str] = {
-        0b00: "Non ECN-Capable Transpor",
+        0b00: "Non ECN-Capable Transport",
         0b10: "ECN Capable Transport",
         0b01: "ECN Capable Transport",
         0b11: "Congestion Encountered",
@@ -97,9 +98,9 @@ class IPv4(IP, Protocol):
             "Fragment offset": self.offset,
             "TTL": self.ttl,
             "Protocol": self.encap_proto,
-            "Header checksum": self.int_to_hex_str(self.checksum),
-            "Source address": self.dot_decimal_notation(self.src_addr),
-            "Destination address": self.dot_decimal_notation(self.dst_addr),
+            "Header checksum": self.cdata_to_hex_str(self.checksum),
+            "Source address": self.array_to_proto_addr(self.src_addr, socket.AF_INET),
+            "Destination address": self.array_to_proto_addr(self.dst_addr, socket.AF_INET),
         }
 
 

@@ -22,7 +22,7 @@ class Ethernet(Protocol):
         ("eth_type", c_uint16),
     ]
     header_len: int = 14
-    ethertypes: ETHERTYPES
+    ethertypes: dict[int, str] = ETHERTYPES
 
     @property
     def encap_proto(self) -> str:
