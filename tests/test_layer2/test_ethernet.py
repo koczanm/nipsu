@@ -9,17 +9,7 @@ class TestEthernet:
         eth_header = Ethernet.decode(raw_eth_header)
         # then
         assert eth_header.describe() == {
-            "Version": 4,
-            "IHL": 5,
-            "DCSP": "0: Standard",
-            "ECN": "Non ECN-Capable Transport",
-            "Total length": 44,
-            "Identifications": 30277,
-            "Flags": "Not set",
-            "Fragment offset": 0,
-            "TTL": 255,
-            "Protocol": "TCP",
-            "Header checksum": "2081",
-            "Source address": "1.1.23.3",
-            "Destination address": "1.1.12.1",
+            "Destination MAC address": "C0:1:14:7C:0:1",
+            "Source MAC address": "C0:2:12:68:0:0",
+            "EtherType": "IPv4",
         }

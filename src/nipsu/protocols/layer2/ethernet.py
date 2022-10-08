@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from ctypes import _CData
 
 
-ETHERTYPES: dict[int, str] = {
+ETHERTYPES = {
     0x0800: "IPv4",
     0x0806: "ARP",
     0x0835: "RARP",
