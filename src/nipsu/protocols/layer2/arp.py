@@ -61,13 +61,12 @@ class ARP(Protocol):
         return self.operations.get(self.oper, f"Unsupported: {self.oper}")
 
     def proto_addr(self, addr_arr: Array["_CData"]):
-        match self.ptype_str:
-            case "IPv4":
-                return self.array_to_proto_addr(addr_arr, socket.AF_INET)
-            case "IPv6":
-                return self.array_to_proto_addr(addr_arr, socket.AF_INET6)
-            case _:
-                return self.array_to_proto_addr(addr_arr)
+        if self.ptype_str == "IPv4":
+            return self.array_to_proto_addr(addr_arr, socket.AF_INET)
+        elif self.ptype_str == "IPv6":
+            return self.array_to_proto_addr(addr_arr, socket.AF_INET6)
+        else:
+            return self.array_to_proto_addr(addr_arr)
 
     def describe(self) -> dict[str, int | str | None]:
         return {
