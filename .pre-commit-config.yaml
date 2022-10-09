@@ -36,13 +36,13 @@ repos:
         entry: pyupgrade --py38-plus
         language: system
         types: [python]
-      - id: mypy
-        name: mypy
-        entry: mypy .
-        require_serial: true
-        language: system
-        types: [python]
-        pass_filenames: false
+      # - id: mypy
+      #   name: mypy
+      #   entry: mypy .
+      #   require_serial: true
+      #   language: system
+      #   types: [python]
+      #   pass_filenames: false
       - id: flake8
         name: flake8
         entry: flake8

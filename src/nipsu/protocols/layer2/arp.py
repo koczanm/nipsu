@@ -2,7 +2,7 @@ import socket
 from ctypes import Array, c_ubyte, c_uint8, c_uint16
 from typing import TYPE_CHECKING, Dict, Sequence, Tuple, Type, Union
 
-from nipsu.protocols.base import Protocol
+from nipsu.protocols.base import JSONType, Protocol
 from nipsu.protocols.layer2.ethernet import ETHERTYPES
 
 if TYPE_CHECKING:
@@ -68,7 +68,7 @@ class ARP(Protocol):
         else:
             return self.array_to_proto_addr(addr_arr)
 
-    def describe(self) -> Dict[str, Union[int, str, None]]:
+    def describe(self) -> JSONType:
         return {
             "Hardware type": self.htype_str,
             "Protocol type": self.ptype_str,

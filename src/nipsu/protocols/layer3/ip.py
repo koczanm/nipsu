@@ -2,7 +2,7 @@ import socket
 from ctypes import c_ubyte, c_uint8, c_uint16, c_uint32
 from typing import TYPE_CHECKING, Dict, Optional, Sequence, Tuple, Type, Union
 
-from nipsu.protocols.base import Protocol
+from nipsu.protocols.base import JSONType, Protocol
 
 if TYPE_CHECKING:
     from ctypes import _CData
@@ -24,7 +24,7 @@ class IPv4(IP, Protocol):
         ("ihl", c_uint8, 4),  # TODO: support the options field if ihl > 5
         ("dscp", c_uint8, 6),
         ("ecn", c_uint8, 2),
-        ("len", c_uint16),
+        ("length", c_uint16),
         ("id", c_uint16),
         ("flags", c_uint16, 3),
         ("offset", c_uint16, 13),
@@ -86,13 +86,13 @@ class IPv4(IP, Protocol):
     def flags_str(self) -> str:
         return self.flag_codes.get(self.flags, "Invalid")
 
-    def describe(self) -> Dict[str, Union[int, str, None]]:
+    def describe(self) -> JSONType:
         return {
             "Version": self.version,
             "IHL": self.ihl,
             "DCSP": f"{self.dscp}: {self.service_class}",
             "ECN": self.ecn_str,
-            "Total length": self.len,
+            "Total length": self.length,
             "Identifications": self.id,
             "Flags": self.flags_str,
             "Fragment offset": self.offset,
