@@ -2,7 +2,7 @@ from nipsu.protocols.layer2 import Ethernet
 
 
 class TestEthernet:
-    def test_decode(self):
+    def test_decode(self) -> None:
         # given
         raw_eth_header = b"\xc0\x01\x14|\x00\x01\xc0\x02\x12h\x00\x00\x08\x00"
         # when

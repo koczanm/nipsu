@@ -2,7 +2,7 @@ from nipsu.protocols.layer4 import TCP
 
 
 class TestTCP:
-    def test_describe(self):
+    def test_describe(self) -> None:
         # given
         raw_tcp_header = b"\xb5\xdd\x00P\n\xaf`N\x00\x00\x00\x00`\xc2\x10 D\xb2\x00\x00"
         # when

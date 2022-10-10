@@ -2,7 +2,7 @@ from nipsu.protocols.layer3 import IPv4
 
 
 class TestIPv4:
-    def test_decode(self):
+    def test_decode(self) -> None:
         # given
         raw_ipv4_header = b"E\x00\x00,vE\x00\x00\xff\x06 \x81\x01\x01\x17\x03\x01\x01\x0c\x01"
         # when
