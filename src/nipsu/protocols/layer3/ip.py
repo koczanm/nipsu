@@ -16,25 +16,6 @@ class IP:
         44: "IPv6-Frag",
         137: "MPLS-in-IP",
     }
-
-
-class IPv4(IP, Protocol):
-    _fields_: Sequence[Union[Tuple[str, Type["_CData"]], Tuple[str, Type["_CData"], int]]] = [
-        ("version", c_uint8, 4),
-        ("ihl", c_uint8, 4),  # TODO: support the options field if ihl > 5
-        ("dscp", c_uint8, 6),
-        ("ecn", c_uint8, 2),
-        ("length", c_uint16),
-        ("id", c_uint16),
-        ("flags", c_uint16, 3),
-        ("offset", c_uint16, 13),
-        ("ttl", c_uint8),
-        ("proto", c_uint8),
-        ("checksum", c_uint16),
-        ("src_addr", c_ubyte * 4),
-        ("dst_addr", c_ubyte * 4),
-    ]
-    header_len: int = 20
     service_classes: Dict[int, str] = {
         0: "Standard",
         8: "Low-priority data",
@@ -64,6 +45,25 @@ class IPv4(IP, Protocol):
         0b01: "ECN Capable Transport",
         0b11: "Congestion Encountered",
     }
+
+
+class IPv4(IP, Protocol):
+    _fields_: Sequence[Union[Tuple[str, Type["_CData"]], Tuple[str, Type["_CData"], int]]] = [
+        ("version", c_uint8, 4),
+        ("ihl", c_uint8, 4),  # TODO: support the options field if ihl > 5
+        ("dscp", c_uint8, 6),
+        ("ecn", c_uint8, 2),
+        ("length", c_uint16),
+        ("id", c_uint16),
+        ("flags", c_uint16, 3),
+        ("offset", c_uint16, 13),
+        ("ttl", c_uint8),
+        ("proto", c_uint8),
+        ("checksum", c_uint16),
+        ("src_addr", c_ubyte * 4),
+        ("dst_addr", c_ubyte * 4),
+    ]
+    header_len: int = 20
     flag_codes: Dict[int, str] = {
         0b000: "Not set",
         0b010: "Don't fragment",
@@ -109,7 +109,7 @@ class IPv6(IP, Protocol):
         ("version", c_uint32, 4),
         ("traffic_cls", c_uint32, 8),
         ("flow_label", c_uint32, 20),
-        ("len", c_uint16),
+        ("length", c_uint16),
         ("next_header", c_uint8),
         ("hop_limit", c_uint8),
         ("src_addr", c_ubyte * 16),
@@ -120,3 +120,36 @@ class IPv6(IP, Protocol):
     @property
     def encap_proto(self) -> str:
         return self.proto_nums.get(self.next_header, f"Unsupported: {self.next_header}")
+
+    @property
+    def dscp(self) -> int:
+        first_6_bits = bin(self.traffic_cls)[2:8]  # skip "0b" prefix
+        return int(first_6_bits, 2)
+
+    @property
+    def ecn(self) -> int:
+        last_2_bits = bin(self.traffic_cls)[-2:]
+        return int(last_2_bits, 2)
+
+    @property
+    def service_class(self) -> Optional[str]:
+        return self.service_classes.get(self.dscp)
+
+    @property
+    def ecn_str(self) -> str:
+        return self.ecn_codes.get(self.ecn, "Invalid")
+
+    def describe(self) -> JSONType:
+        return {
+            "Version": self.version,
+            "Traffic class": {
+                "DSCP": f"{self.dscp}: {self.service_class}",
+                "ECN": self.ecn_str,
+            },
+            "Flow label": self.flow_label,
+            "Payload length": self.length,
+            "Next header": self.encap_proto,
+            "Hop limit": self.hop_limit,
+            "Source address": self.array_to_proto_addr(self.src_addr, socket.AF_INET6),
+            "Destination address": self.array_to_proto_addr(self.dst_addr, socket.AF_INET6),
+        }
