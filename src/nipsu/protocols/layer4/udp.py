@@ -1,7 +1,7 @@
 from ctypes import c_uint16
-from typing import TYPE_CHECKING, Sequence, Tuple, Type, Union
+from typing import TYPE_CHECKING, Any, Dict, Sequence, Tuple, Type, Union
 
-from nipsu.protocols.base import JSONType, Protocol
+from nipsu.protocols.base import Protocol
 
 if TYPE_CHECKING:
     from ctypes import _CData
@@ -16,7 +16,7 @@ class UDP(Protocol):
     ]
     header_len: int = 8
 
-    def describe(self) -> JSONType:
+    def show(self) -> Dict[str, Any]:
         return {
             "Source port": self.src_port,
             "Destination port": self.dst_port,

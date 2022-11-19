@@ -1,8 +1,8 @@
 import socket
 from ctypes import Array, c_ubyte, c_uint8, c_uint16
-from typing import TYPE_CHECKING, Dict, Sequence, Tuple, Type, Union
+from typing import TYPE_CHECKING, Any, Dict, Sequence, Tuple, Type, Union
 
-from nipsu.protocols.base import JSONType, Protocol
+from nipsu.protocols.base import Protocol
 from nipsu.protocols.layer2.ethernet import ETHERTYPES
 
 if TYPE_CHECKING:
@@ -14,7 +14,7 @@ class ARP(Protocol):
         ("htype", c_uint16),
         ("ptype", c_uint16),
         ("hlen", c_uint8),
-        ("iplen", c_uint8),
+        ("plen", c_uint8),
         ("oper", c_uint16),
         ("sha", c_ubyte * 6),
         ("spa", c_ubyte * 4),
@@ -68,7 +68,7 @@ class ARP(Protocol):
         else:
             return self.array_to_proto_addr(addr_arr)
 
-    def describe(self) -> JSONType:
+    def show(self) -> Dict[str, Any]:
         return {
             "Hardware type": self.htype_str,
             "Protocol type": self.ptype_str,

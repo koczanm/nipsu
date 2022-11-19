@@ -32,14 +32,33 @@ packages = [
   {include = "nipsu", from = "src"}
 ]
 
+[tool.poetry.scripts]
+nipsu = "nipsu.cli:app"
+
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
-typer = "^0.6.1"
+typer = {extras = ["all"], version = "^0.7.0"}
 pypcap = {git = "https://github.com/koczanm/pypcap.git"}
+PyYAML = "^6.0"
 
 [tool.poetry.group.dev.dependencies]
+autoflake = "^1.7.7"
+black = "^22.10.0"
+flake8 = "^5.0.4"
+flake8-bugbear = "^22.10.27"
+flake8-builtins = "^2.0.1"
+flake8-comprehensions = "^3.10.1"
+flake8-debugger = "^4.1.2"
+flake8-eradicate = "^1.4.0"
+flake8-logging-format = "^0.8.1"
+isort = "^5.10.1"
+mypy = "^0.991"
+pep8-naming = "^0.13.2"
+pre-commit = "^2.20.0"
 pytest = "^7.1.3"
 pytest-cov = "^4.0.0"
+pyupgrade = "^3.2.2"
+ipython = "^8.6.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -80,3 +99,7 @@ strict_equality = true
 warn_unused_ignores = true
 warn_redundant_casts = true
 warn_return_any = true
+
+[[tool.mypy.overrides]]
+module = ["pcap"]
+ignore_missing_imports = true

@@ -2,13 +2,13 @@ from nipsu.protocols.layer4 import UDP
 
 
 class TestUDP:
-    def test_describe(self) -> None:
+    def test_show(self) -> None:
         # given
         raw_udp_header = b"\x8f\x1b\x00\x13\x00\x16\xf5p"
         # when
         udp_header = UDP.decode(raw_udp_header)
         # then
-        assert udp_header.describe() == {
+        assert udp_header.show() == {
             "Source port": 36635,
             "Destination port": 19,
             "Length": 22,

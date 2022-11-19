@@ -1,7 +1,7 @@
 from ctypes import c_ubyte, c_uint16
-from typing import TYPE_CHECKING, Dict, Sequence, Tuple, Type, Union
+from typing import TYPE_CHECKING, Any, Dict, Sequence, Tuple, Type, Union
 
-from nipsu.protocols.base import JSONType, Protocol
+from nipsu.protocols.base import Protocol
 
 if TYPE_CHECKING:
     from ctypes import _CData
@@ -28,7 +28,7 @@ class Ethernet(Protocol):
     def encap_proto(self) -> str:
         return self.ethertypes.get(self.eth_type, f"Unsupported: {self.eth_type}")
 
-    def describe(self) -> JSONType:
+    def show(self) -> Dict[str, Any]:
         return {
             "Destination MAC address": self.colon_hex_notation(self.dst_mac),
             "Source MAC address": self.colon_hex_notation(self.src_mac),

@@ -1,28 +1,25 @@
 from __future__ import annotations
 
 import socket
-from abc import abstractmethod, abstractproperty
+from abc import abstractmethod
 from ctypes import Array, BigEndianStructure
-from typing import TYPE_CHECKING, Any, Dict, List, Union
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from ctypes import _CData
-
-
-JSONType = Union[bool, float, int, str, None, Dict[str, Any], List[Any]]
 
 
 class Protocol(BigEndianStructure):
     _pack_: int = 1
     header_len: int
 
-    @abstractproperty
+    @property
     def encap_proto(self) -> str | None:
-        raise NotImplementedError
+        return None
 
     @abstractmethod
-    def describe(self) -> JSONType:
-        raise NotImplementedError
+    def show(self) -> dict[str, Any]:
+        pass
 
     @classmethod
     def decode(cls, packet: bytes) -> Protocol:

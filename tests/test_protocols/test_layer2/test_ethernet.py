@@ -8,7 +8,7 @@ class TestEthernet:
         # when
         eth_header = Ethernet.decode(raw_eth_header)
         # then
-        assert eth_header.describe() == {
+        assert eth_header.show() == {
             "Destination MAC address": "C0:1:14:7C:0:1",
             "Source MAC address": "C0:2:12:68:0:0",
             "EtherType": "IPv4",

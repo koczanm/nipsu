@@ -1,7 +1,7 @@
 from ctypes import c_uint16, c_uint32
-from typing import TYPE_CHECKING, List, Sequence, Tuple, Type, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Sequence, Tuple, Type, Union
 
-from nipsu.protocols.base import JSONType, Protocol
+from nipsu.protocols.base import Protocol
 
 if TYPE_CHECKING:
     from ctypes import _CData
@@ -27,7 +27,7 @@ class TCP(Protocol):
     def active_flags(self) -> List[str]:
         return [self.flag_codes[i] for i, flag in enumerate(self.cdata_to_bin_str(self.flags)) if flag == "1"]
 
-    def describe(self) -> JSONType:
+    def show(self) -> Dict[str, Any]:
         return {
             "Source port": self.src_port,
             "Destination port": self.dst_port,

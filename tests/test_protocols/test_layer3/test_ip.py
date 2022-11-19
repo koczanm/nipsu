@@ -9,7 +9,7 @@ class TestIPv4:
         # when
         ipv4_header = IPv4.decode(raw_ipv4_header)
         # then
-        assert ipv4_header.describe() == {
+        assert ipv4_header.show() == {
             "Version": 4,
             "IHL": 5,
             "DCSP": "0: Standard",
@@ -36,7 +36,7 @@ class TestIPv6:
         # when
         ipv6_header = IPv6.decode(raw_ipv6_header)
         # then
-        assert ipv6_header.describe() == {
+        assert ipv6_header.show() == {
             "Version": 1,
             "Traffic class": {
                 "DSCP": "16: Network operations, administration and management",

@@ -1,8 +1,8 @@
 import socket
 from ctypes import c_ubyte, c_uint8, c_uint16, c_uint32
-from typing import TYPE_CHECKING, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional, Sequence, Tuple, Type, Union
 
-from nipsu.protocols.base import JSONType, Protocol
+from nipsu.protocols.base import Protocol
 
 if TYPE_CHECKING:
     from ctypes import _CData
@@ -86,7 +86,7 @@ class IPv4(IP, Protocol):
     def flags_str(self) -> str:
         return self.flag_codes.get(self.flags, "Invalid")
 
-    def describe(self) -> JSONType:
+    def show(self) -> Dict[str, Any]:
         return {
             "Version": self.version,
             "IHL": self.ihl,
@@ -123,13 +123,13 @@ class IPv6(IP, Protocol):
 
     @property
     def dscp(self) -> int:
-        first_6_bits = bin(self.traffic_cls)[2:8]  # skip "0b" prefix
-        return int(first_6_bits, 2)
+        six_msb = f"{self.traffic_cls:08b}"[-6:]
+        return int(six_msb, 2)
 
     @property
     def ecn(self) -> int:
-        last_2_bits = bin(self.traffic_cls)[-2:]
-        return int(last_2_bits, 2)
+        two_lsb = f"{self.traffic_cls:08b}"[:2]
+        return int(two_lsb, 2)
 
     @property
     def service_class(self) -> Optional[str]:
@@ -139,7 +139,7 @@ class IPv6(IP, Protocol):
     def ecn_str(self) -> str:
         return self.ecn_codes.get(self.ecn, "Invalid")
 
-    def describe(self) -> JSONType:
+    def show(self) -> Dict[str, Any]:
         return {
             "Version": self.version,
             "Traffic class": {
