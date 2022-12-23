@@ -12,4 +12,4 @@ The project is designed for purely educational purposes, of which it's worth men
 
 ## Demo
 
-![demo](./assets/demo.svg)
+![demo](./assets/demo.gif)
